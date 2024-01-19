@@ -1,20 +1,22 @@
-name: CI
+name: Get PR Labels
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch: 
+  pull_request:
+    types:
+      - opened
+  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: self-hosted
+  get_labels:
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Run PowerShell Script
-      shell: pwsh
+    - name: Get PR Labels
       run: |
-         hostname
-         Write-Output "PR Labels: $(${{ github.event.label.name }})"
+        # Extract the labels from the GitHub context
+        $prLabels = ${{ github.event.pull_request.labels.*.name }}
+
+        # Output the labels
+        echo "PR Labels: $prLabels"
