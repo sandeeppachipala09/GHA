@@ -17,7 +17,7 @@ jobs:
       shell: pwsh
       run: |
         # Extract the labels from the GitHub context in PowerShell
-        $prLabels = $env:{{ github.event.pull_request.labels.*.name }}
+        $prLabels = ${{ github.event.pull_request.labels.*.name }}
 
         # Output the labels
         Write-Output "PR Labels: $($prLabels -join ', ')"
