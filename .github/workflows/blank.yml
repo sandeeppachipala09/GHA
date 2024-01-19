@@ -14,10 +14,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get PR Labels
-      shell: pwsh
       run: |
-        # Extract the labels from the GitHub context in PowerShell
-        $prLabels = ${{ github.event.pull_request.labels.*.name }}
+        # Extract the labels from the GitHub context
+        $prLabels = ${{ join(', ', github.event.pull_request.labels.*.name) }}
 
         # Output the labels
-        Write-Output "PR Labels: $($prLabels -join ', ')"
+        echo "PR Labels: $prLabels"
