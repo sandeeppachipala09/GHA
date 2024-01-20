@@ -1,22 +1,28 @@
-name: Get PR Labels
+name: Read PR Labels
 
 on:
   pull_request:
     types:
-      - opened
-  workflow_dispatch:
+      - labeled
 
 jobs:
-  get_labels:
-    runs-on: ubuntu-latest
+  read-labels:
+    runs-on: self-hosted
+
     steps:
-    - name: Checkout Repository
+    - name: Check out the code
       uses: actions/checkout@v2
 
-    - name: Get PR Labels
+    - name: Set up GitHub CLI
       run: |
-        # Extract the labels from the GitHub context
-        $prLabels = ${{ join(', ', github.event.pull_request.labels.*.name) }}
+        sudo apt-get install -y gh
+        gh --version
 
-        # Output the labels
-        echo "PR Labels: $prLabels"
+    - name: Fetch PR labels
+      run: |
+        PR_NUMBER=${{ github.event.pull_request.number }}
+
+        # Fetch pull request labels using GitHub CLI
+        PR_LABELS=$(gh pr view ${PR_NUMBER} --json labels -q '.labels[].name')
+
+        echo "Labels for PR#${PR_NUMBER}: $PR_LABELS"
