@@ -22,6 +22,6 @@ jobs:
         $PR_NUMBER=$env:GITHUB_EVENT_PULL_REQUEST_NUMBER
 
         # Fetch pull request labels using GitHub CLI
-        $PR_LABELS=gh pr view $PR_NUMBER --json labels -q '.labels[].name'
+        $PR_LABELS=gh pr view ${{PR_NUMBER}} --json labels -q '.labels[].name'
 
-        Write-Host "Labels for PR#$PR_NUMBER: $PR_LABELS"
+        Write-Host "Labels for PR: ${{PR_LABELS}}"
