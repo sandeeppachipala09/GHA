@@ -13,7 +13,15 @@ jobs:
     - name: Check out the code
       uses: actions/checkout@v2
 
-    - name: Set up GitHub CLI
+    - name: Install Chocolatey
+      run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+    - name: Refresh Environment (may require restart)
+      run: |
+        refreshenv
+
+    - name: Install GitHub CLI
       run: |
         choco install gh -y
         gh --version
@@ -26,3 +34,4 @@ jobs:
         $PR_LABELS=gh pr view $PR_NUMBER --json labels -q '.labels[].name'
 
         Write-Host "Labels for PR#$PR_NUMBER: $PR_LABELS"
+
