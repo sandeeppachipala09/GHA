@@ -18,10 +18,6 @@ jobs:
         # Install Chocolatey without administrative permissions
         Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-    - name: Refresh Environment
-      run: |
-        refreshenv
-
     - name: Install GitHub CLI
       run: |
         choco install gh -y
