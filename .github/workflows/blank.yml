@@ -7,7 +7,7 @@ on:
 
 jobs:
   read-labels:
-    runs-on: self-hosted
+    runs-on: self-hosted-windows
 
     steps:
     - name: Check out the code
@@ -15,14 +15,14 @@ jobs:
 
     - name: Set up GitHub CLI
       run: |
-        sudo apt-get install -y gh
+        choco install gh -y
         gh --version
 
     - name: Fetch PR labels
       run: |
-        PR_NUMBER=${{ github.event.pull_request.number }}
+        $PR_NUMBER=$env:GITHUB_EVENT_PULL_REQUEST_NUMBER
 
         # Fetch pull request labels using GitHub CLI
-        PR_LABELS=$(gh pr view ${PR_NUMBER} --json labels -q '.labels[].name')
+        $PR_LABELS=gh pr view $PR_NUMBER --json labels -q '.labels[].name'
 
-        echo "Labels for PR#${PR_NUMBER}: $PR_LABELS"
+        Write-Host "Labels for PR#$PR_NUMBER: $PR_LABELS"
