@@ -18,15 +18,9 @@ jobs:
         # Install Chocolatey without administrative permissions
         Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-    - name: Set up Chocolatey environment
-      run: |
-        $env:ChocolateyInstall = "$env:USERPROFILE\chocolatey"
-        $env:Path += ";$env:ChocolateyInstall\bin"
-
     - name: Install GitHub CLI
       run: |
-        choco install gh -y
-        $env:Path += ";$($env:USERPROFILE)\chocolatey\bin"  # Add Chocolatey bin to PATH
+        & "$env:USERPROFILE\chocolatey\bin\choco" install gh -y
         gh --version
 
     - name: Fetch PR labels
