@@ -6,7 +6,7 @@ on:
       - labeled
 
 env:
-  GIT-FOLDER-PATH: 'C:\users\spachipala'
+  GIT-FOLDER-PATH: 'C:\Users\spachipala\projects\test'
 
 jobs:
   read-labels:
