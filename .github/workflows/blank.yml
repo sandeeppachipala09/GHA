@@ -4,28 +4,23 @@ on:
   pull_request:
     types:
       - labeled
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  PR_NUMBER: 1
-
 
 jobs:
   read-labels:
     runs-on: self-hosted
 
     steps:
-    - name: Check out the code
-      uses: actions/checkout@v2
-
-    - name: Install GitHub CLI
+    - uses: actions/checkout@v2
+    
+    - name: Extract the Label
+      id: extract-label
       run: |
-        gh --version
+        $Labels = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty pull_request | Select-Object -ExpandProperty labels
+        $FirstLabel = $Labels[0].name
+        Write-Host "First Label: $FirstLabel"
+        echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
 
-    - name: Fetch PR labels
+    - name: Use Label
       run: |
-        # $PR_NUMBER=$env:GITHUB_EVENT_PULL_REQUEST_NUMBER
-        cd C:\actions-runner\_work\GHA\GHA
-        # Fetch pull request labels using GitHub CLI
-        $PR_LABELS=gh pr view $PR_NUMBER --json labels -q '.labels[].name'
-
-        Write-Host "Labels for PR: $PR_LABELS"
+        $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
+        Write-Host "Using First Label: $FirstLabel"
