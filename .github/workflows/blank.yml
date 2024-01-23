@@ -21,6 +21,10 @@ jobs:
         echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
 
     - name: Use Label
+      if: contains('DB' , ${{ steps.extract-label.outputs.FIRST_LABEL }})
       run: |
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         Write-Host "Using First Label: $FirstLabel"
+     
+         
+     
