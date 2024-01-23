@@ -6,7 +6,7 @@ on:
       - labeled
 
 env:
-  GIT-REPO-LOC: 'C:\users\spachipala'
+  GIT-FOLDER-PATH: 'C:\users\spachipala'
 
 jobs:
   read-labels:
@@ -25,7 +25,7 @@ jobs:
 
     - name: Use Label
       if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
-      working-directory: ${{ GIT-REPO-LOC }}
+      working-directory: ${{ GIT-FOLDER-PATH }}
       run: |
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         Write-Host "Using First Label: $FirstLabel"
