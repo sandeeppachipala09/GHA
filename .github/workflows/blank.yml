@@ -4,6 +4,10 @@ on:
   pull_request:
     types:
       - labeled
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PR_NUMBER: 1
+
 
 jobs:
   read-labels:
@@ -20,10 +24,7 @@ jobs:
     - name: Fetch PR labels
       run: |
         # $PR_NUMBER=$env:GITHUB_EVENT_PULL_REQUEST_NUMBER
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: 1
-
+        
         # Fetch pull request labels using GitHub CLI
         $PR_LABELS=gh pr view $PR_NUMBER --json labels -q '.labels[].name'
 
