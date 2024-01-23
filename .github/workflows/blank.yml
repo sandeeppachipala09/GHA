@@ -5,6 +5,9 @@ on:
     types:
       - labeled
 
+env:
+  GIT-REPO-LOC: 'C:\users\spachipala'
+
 jobs:
   read-labels:
     runs-on: self-hosted
@@ -22,9 +25,12 @@ jobs:
 
     - name: Use Label
       if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
+      working-directory: ${{ GIT-REPO-LOC }}
       run: |
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         Write-Host "Using First Label: $FirstLabel"
+        .\test_CICD.ps1 $FirstLabel
+        
      
          
      
