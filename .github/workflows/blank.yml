@@ -19,7 +19,7 @@ jobs:
 
     - name: Fetch PR labels
       run: |
-        : # $PR_NUMBER=$env:GITHUB_EVENT_PULL_REQUEST_NUMBER
+        # $PR_NUMBER=$env:GITHUB_EVENT_PULL_REQUEST_NUMBER
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: 1
