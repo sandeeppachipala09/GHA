@@ -29,7 +29,8 @@ jobs:
       run: |
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         Write-Host "Using First Label: $FirstLabel"
-        .\test_CICD.ps1 $FirstLabel
+        ls
+        #.\test_CICD.ps1 $FirstLabel
         
      
          
