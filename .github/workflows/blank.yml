@@ -18,7 +18,7 @@ jobs:
     - name: Extract the Label
       id: extract-label
       run: |
-        $Events = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json
+        $Events = ${{ toJSON(env:GITHUB_EVENT_PATH) }}
         $Labels = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty pull_request | Select-Object -ExpandProperty labels
         $FirstLabel = $Labels[0].name
         Write-Host "Events: $Events"
