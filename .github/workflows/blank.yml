@@ -18,10 +18,13 @@ jobs:
     - name: Extract the Label
       id: extract-label
       run: |
+        $Events = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select *
         $Labels = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty pull_request | Select-Object -ExpandProperty labels
         $FirstLabel = $Labels[0].name
+        Write-Host "Events: $Events"
         Write-Host "First Label: $FirstLabel"
         echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
+        echo "Events=$Events" >> $ENV:GITHUB_OUTPUT
 
     - name: Use Label
       if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
