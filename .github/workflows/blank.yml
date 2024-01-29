@@ -16,7 +16,6 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Extract the Label
-      if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
       id: extract-label
       run: |
         $Events = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty number
@@ -28,6 +27,7 @@ jobs:
         echo "Events=$Events" >> $ENV:GITHUB_OUTPUT
 
     - name: Use Label
+      if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
       run: |
         pwd
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
