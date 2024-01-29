@@ -30,6 +30,7 @@ jobs:
       if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
       working-directory: ${{ env.GIT-FOLDER-PATH }}
       run: |
+        cd 'C:\Users\spachipala\projects\test'
         pwd
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         $FirstLabel =  $FirstLabel.Substring(3,($FirstLabel.Length)-3)
