@@ -44,6 +44,7 @@ jobs:
         $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
         $files = Get-ChildItem | select -ExpandProperty Name
         $PSVersionTable
+        ls
         foreach ($file in $files){
         $file
         Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
