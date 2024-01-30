@@ -31,6 +31,7 @@ jobs:
       if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
       run: |
         pwd
+        whoami
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         $FirstLabel =  $FirstLabel.Substring(3,($FirstLabel.Length)-3)
         Write-Host "Using First Label: $FirstLabel"
@@ -46,5 +47,5 @@ jobs:
         $files = Get-ChildItem | select -ExpandProperty Name
         foreach ($file in $files){
         $file
-        Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
+        #Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
         }
