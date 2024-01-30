@@ -23,22 +23,25 @@ jobs:
         $FirstLabel = $Labels[0].name
         Write-Host "Events: $Events"
         Write-Host "First Label: $FirstLabel"
-        echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
-        echo "Events=$Events" >> $ENV:GITHUB_OUTPUT
+        echo "Events=$Events"
 
     - name: Use Label
+      id: label-use
       if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
       run: |
         pwd
         $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
         $FirstLabel =  $FirstLabel.Substring(3,($FirstLabel.Length)-3)
         Write-Host "Using First Label: $FirstLabel"
+        echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
       
     - name: Execute PR script(s)
       run: |
         . C:\Users\spachipala\projects\test\Deploy-Database.ps1
         pwd
+        $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
         $files = Get-ChildItem | select -ExpandProperty Name
         foreach ($file in $files){
-        Deploy-Database -Environment LOCAL -Database $FirstLabel -InputFile $file -Verbose
+        $file
+        Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
         }
