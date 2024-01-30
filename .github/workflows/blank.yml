@@ -38,6 +38,7 @@ jobs:
         echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
       
     - name: Execute PR script(s)
+      shell: pwsh
       run: |
         . C:\Users\spachipala\projects\test\Deploy-Database.ps1
         pwd
