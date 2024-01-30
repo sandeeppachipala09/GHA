@@ -40,6 +40,8 @@ jobs:
     - name: Execute PR script(s)
       run: |
         . C:\Users\spachipala\projects\test\Deploy-Database.ps1
+        $committedFiles = git diff --name-only $env:GITHUB_BEFORE_SHA $env:GITHUB_SHA
+        Write-Host "Committed files: $committedFiles"
         pwd
         $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
         $files = Get-ChildItem | select -ExpandProperty Name
@@ -47,5 +49,5 @@ jobs:
         ls
         foreach ($file in $files){
         $file
-        Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
+        #Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
         }
