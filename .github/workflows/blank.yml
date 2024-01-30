@@ -39,8 +39,6 @@ jobs:
       
     - name: Execute PR script(s)
       run: |
-        Import-Module dbatools
-        Import-module SqlServer
         . C:\Users\spachipala\projects\test\Deploy-Database.ps1
         pwd
         $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
