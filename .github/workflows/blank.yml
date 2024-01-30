@@ -38,7 +38,7 @@ jobs:
       
     - name: Execute PR script(s)
       run: |
-        Import-Module -name dbatools
+        Import-Module dbatools -erroraction SilentlyContinue
         . C:\Users\spachipala\projects\test\Deploy-Database.ps1
         pwd
         $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
