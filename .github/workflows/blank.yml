@@ -42,3 +42,7 @@ jobs:
     - name: Execute PR script(s)
       run: |
         pwd
+        $files = Get-ChildItem | select -ExpandProperty Name
+        foreach ($file in $files){
+        Deploy-Database -Environment LOCAL -Database $FirstLabel -InputFile $file -Verbose
+        }
