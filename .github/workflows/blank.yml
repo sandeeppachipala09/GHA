@@ -45,5 +45,5 @@ jobs:
         $files = Get-ChildItem | select -ExpandProperty Name
         foreach ($file in $files){
         $file
-        #Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
+        Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
         }
