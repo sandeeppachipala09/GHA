@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+         fetch-depth: 2
     
     - name: Extract the Label
       id: extract-label
@@ -26,27 +28,8 @@ jobs:
         echo "Events=$Events"
         echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
 
-    - name: Use Label
-      id: label-use
-      if: contains(steps.extract-label.outputs.FIRST_LABEL, 'DB')
+    - name: Get changes
       run: |
-        pwd
-        whoami
-        $FirstLabel = "${{ steps.extract-label.outputs.FIRST_LABEL }}"
-        $FirstLabel =  $FirstLabel.Substring(3,($FirstLabel.Length)-3)
-        Write-Host "Using First Label: $FirstLabel"
-        echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
-      
-    - name: Execute PR script(s)
-      run: |
-        . C:\Users\spachipala\projects\test\Deploy-Database.ps1
-        cd unscheduled\DB-test\
-        pwd
-        $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
-        $files = Get-ChildItem | select -ExpandProperty Name
-        $PSVersionTable
-        ls
-        foreach ($file in $files){
-        $file
-        Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
-        }
+         git fetch origin main
+         $changes = git diff --name-only --diff-filter=d main~ main
+         Write-Host "changes: $changes"
