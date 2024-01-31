@@ -25,8 +25,6 @@ jobs:
         Write-Host "First Label: $FirstLabel"
         echo "Events=$Events"
         echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
-        $changedFiles = git diff --name-only $env:GITHUB_BASE_REF...$env:GITHUB_HEAD_REF
-        Write-Host "Changed files in PR: $changedFiles"
 
     - name: Use Label
       id: label-use
@@ -42,6 +40,7 @@ jobs:
     - name: Execute PR script(s)
       run: |
         . C:\Users\spachipala\projects\test\Deploy-Database.ps1
+        cd unscheduled\DB-test\
         pwd
         $database = "${{ steps.label-use.outputs.FIRST_LABEL }}"
         $files = Get-ChildItem | select -ExpandProperty Name
