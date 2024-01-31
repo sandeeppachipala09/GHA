@@ -23,7 +23,6 @@ jobs:
         $GetLabel = $Labels[0].name
         Write-Host "PR_Number: $PR_Number"
         Write-Host "Label: $GetLabel"
-        echo "PR_Number=$PR_Number"
         echo "LABEL=$GetLabel" >> $ENV:GITHUB_OUTPUT
 
     - name: Use Label
@@ -32,7 +31,7 @@ jobs:
       run: |
         $DB_info = "${{ steps.extract-label.outputs.LABEL }}"
         $DB_info =  $DB_info.Substring(3,($DB_info.Length)-3)
-        Write-Host "Using Label: $DB_info"
+        Write-Host "DB_Name: $DB_info"
         echo "LABEL=$DB_info" >> $ENV:GITHUB_OUTPUT
       
     - name: Execute PR script(s)
