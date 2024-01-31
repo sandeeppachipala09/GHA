@@ -14,22 +14,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-         fetch-depth: 0
     
     - name: Extract the Label
       id: extract-label
       run: |
-        $Events = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty number
+        $PR_Number = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty number
         $Labels = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Select-Object -ExpandProperty pull_request | Select-Object -ExpandProperty labels
-        $FirstLabel = $Labels[0].name
-        Write-Host "Events: $Events"
-        Write-Host "First Label: $FirstLabel"
-        echo "Events=$Events"
-        echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
+        $GetLabel = $Labels[0].name
+        Write-Host "PR_Number: $PR_Number"
+        Write-Host "Label: $GetLabel"
+        echo "PR_Number=$PR_Number"
+        echo "LABEL=$GetLabel" >> $ENV:GITHUB_OUTPUT
 
-    - name: Get changes
+    - name: Use Label
+      id: label-use
+      if: contains(steps.extract-label.outputs.LABEL, 'DB')
       run: |
-         git fetch origin main
-         $changes = git diff --name-only --diff-filter=d main~ main
-         Write-Host "changes: $changes"
+        $DB_info = "${{ steps.extract-label.outputs.LABEL }}"
+        $DB_info =  $DB_info.Substring(3,($DB_info.Length)-3)
+        Write-Host "Using Label: $DB_info"
+        echo "LABEL=$DB_info" >> $ENV:GITHUB_OUTPUT
+      
+    - name: Execute PR script(s)
+      run: |
+        . C:\Users\spachipala\projects\test\Deploy-Database.ps1
+        cd unscheduled\DB-test\
+        $database = "${{ steps.label-use.outputs.LABEL }}"
+        $files = Get-ChildItem | select -ExpandProperty Name
+        foreach ($file in $files){
+        $file
+        Deploy-Database -Environment LOCAL -Database $database -InputFile $file -Verbose
+        }
