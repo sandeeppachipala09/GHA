@@ -25,7 +25,7 @@ jobs:
         Write-Host "First Label: $FirstLabel"
         echo "Events=$Events"
         echo "FIRST_LABEL=$FirstLabel" >> $ENV:GITHUB_OUTPUT
-        $changedFiles = git diff --name-only origin/main...$Events
+        $changedFiles = git diff --name-only $env:GITHUB_BASE_REF...$env:GITHUB_HEAD_REF
         Write-Host "Changed files in PR: $changedFiles"
 
     - name: Use Label
